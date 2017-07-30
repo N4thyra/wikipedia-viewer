@@ -4,9 +4,15 @@ const viewer = (() => {
 
 // DOM $selectors
 const url        = "https://en.wikipedia.org//w/api.php?callback=?",
-      $el = $('.viewer-container'),
+      $el        = $('.viewer-container'),
       $input     = $el.find('#input'),
-      $button    = $el.find('#search');
+      $button    = $el.find('#search'),
+      $random    = $el.find('#random');
+
+// generate a random website
+  $random.click(() => {
+    window.location.href = ' http://en.wikipedia.org/wiki/Special:Random';
+  });
 
 // process information when ENTER is pressed
   $input.keypress((e) => {
