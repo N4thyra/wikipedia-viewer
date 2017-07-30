@@ -11,7 +11,7 @@ const url        = "https://en.wikipedia.org//w/api.php?callback=?",
 
 // generate a random website
   $random.click(() => {
-    window.location.href = ' http://en.wikipedia.org/wiki/Special:Random';
+    window.open('http://en.wikipedia.org/wiki/Special:Random', '_blank');
   });
 
 // process information when ENTER is pressed
