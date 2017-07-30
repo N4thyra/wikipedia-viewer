@@ -1,24 +1,29 @@
-$(document).ready(function(){
+$().ready(() => {
 
-let url        = "https://en.wikipedia.org//w/api.php?callback=?",
-    $cachedDom = $('.viewer-container'),
-    $input     = $cachedDom.find('#input'),
-    $button    = $cachedDom.find('#search');
+const viewer = (() => {
 
-  $input.keypress(function(e) {
+// DOM $selectors
+const url        = "https://en.wikipedia.org//w/api.php?callback=?",
+      $el = $('.viewer-container'),
+      $input     = $el.find('#input'),
+      $button    = $el.find('#search');
+
+// process information when ENTER is pressed
+  $input.keypress((e) => {
     if (e.keyCode == 13) {
       process();
     }
   });
 
-  $button.click(function() {
+// process information when button gets clicked
+  $button.click(() => {
     process();
   });
 
   function process() {
 
-    let $input   = $cachedDom.find('#input').val(),
-        $row     = $cachedDom.find('.viewer-body');
+    let $input   = $el.find('#input').val(),
+        $row     = $el.find('.viewer-body');
 
         //clear everything that's is on the screen
         $row.html('');
@@ -34,20 +39,32 @@ let url        = "https://en.wikipedia.org//w/api.php?callback=?",
         exlimit: "max",
       },
       function(data){
-        let output = '';
 
         if(typeof data.query ==="undefined"){
           alert("Error - Empty Input");
           return false;
+        } else {
+          let result = makeOutput(data.query.pages);
+          $row.append(result);
+
         }
-        for(let page in data.query.pages) {
-          let title   = data.query.pages[page].title,
-              content = data.query.pages[page].extract,
-              url     = data.query.pages[page].canonicalurl;
+      });
+
+      // take JSON data and return a chunk of HTML code, which is going to be inserted
+      // into the page
+      function makeOutput(query) {
+        let output = '';
+
+        for(let page in query) {
+          let title   = query[page].title,
+              content = query[page].extract,
+              url     = query[page].canonicalurl;
 
               output  += `<a target="_blank" href="${url}"><div>${title}</div></a>`;
         }
-        $row.append(output);
-      });
+        return output;
+      }
   }
+})();
+
 });
